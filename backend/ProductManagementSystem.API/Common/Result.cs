@@ -17,13 +17,13 @@
             };
         }
 
-        public static Result<T> Fail(int statusCode, string[] errors)
+        public static Result<T> Fail(int statusCode = 400, List<string>? errors = null)
         {
             return new Result<T>
             {
                 Success = false,
                 StatusCode = statusCode,
-                Errors = errors.ToList()
+                Errors = errors ?? new List<string>()
             };
         }
     }
