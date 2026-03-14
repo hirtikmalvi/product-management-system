@@ -1,5 +1,8 @@
-﻿using ProductManagementSystem.API.Common;
+﻿using Microsoft.AspNetCore.Identity;
+using ProductManagementSystem.API.Common;
+using ProductManagementSystem.API.DTOs.Auth.Login;
 using ProductManagementSystem.API.DTOs.Auth.Register;
+using ProductManagementSystem.API.Models;
 using ProductManagementSystem.API.Repositories.Interfaces;
 using ProductManagementSystem.API.Services.Interfaces;
 
@@ -8,10 +11,14 @@ namespace ProductManagementSystem.API.Services.Implementations
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository authRepository;
-        public AuthService(IAuthRepository _authRepository) 
+        private readonly ITokenService tokenService;
+
+        public AuthService(IAuthRepository _authRepository, ITokenService _tokenService) 
         { 
             authRepository = _authRepository;
+            tokenService = _tokenService;
         }
+
         public async Task<Result<RegisterUserResponseDTO>> Register(RegisterUserRequestDTO request)
         {
             if (await authRepository.EmailExists(request.Email))
@@ -31,9 +38,29 @@ namespace ProductManagementSystem.API.Services.Implementations
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 return Result<RegisterUserResponseDTO>.Fail(500);
             }
-
         }
+        public async Task<Result<LoginUserResponseDTO>> Login(LoginUserRequestDTO request)
+        {
+            var user = await authRepository.GetUserByEmail(request.Email);
+
+            if(user == null)
+            {
+                return Result<LoginUserResponseDTO>.Fail(401);
+            }
+            if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
+            {
+                return Result<LoginUserResponseDTO>.Fail(401);
+            }
+
+            var token = tokenService.GenerateJwtToken(user);
+            return Result<LoginUserResponseDTO>.Ok(new LoginUserResponseDTO
+            {
+                Token = token, 
+            }, 200);
+        }
+
     }
 }

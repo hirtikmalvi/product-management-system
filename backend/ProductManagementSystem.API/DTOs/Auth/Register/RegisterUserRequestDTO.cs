@@ -15,7 +15,7 @@ namespace ProductManagementSystem.API.DTOs.Auth.Register
         [MaxLength(255)]
         public string Password { get; set; }
         [Required]
-        [AllowedValues("Admin", "User")]
+        [AllowedValues("Admin", "User", ErrorMessage = "Only Admin and User roles are allowed.")]
         [MaxLength(15)]
         public string Role { get; set; }
     }

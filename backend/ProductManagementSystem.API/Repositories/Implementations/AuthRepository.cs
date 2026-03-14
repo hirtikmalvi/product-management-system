@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Npgsql;
+using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Auth.Register;
 using ProductManagementSystem.API.Models;
 using ProductManagementSystem.API.Repositories.Interfaces;
@@ -47,5 +48,39 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             bool exists = result != null && (bool) result;
             return exists;
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            User user = null;
+
+            await using var conn = new NpgsqlConnection(connectionString);
+            await conn.OpenAsync();
+
+            string sql = "SELECT * FROM Users WHERE Email = @email";
+            await using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("email", email);
+            
+            await using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                user = new User
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                    Name = reader.GetString(reader.GetOrdinal("Name")),
+                    Email = reader.GetString(reader.GetOrdinal("Email")),
+                    PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
+                    Role = reader.GetString(reader.GetOrdinal("Role"))
+                };
+            }
+            
+            return user;
+        }
     }
 }
+
+
+
+
+
+
