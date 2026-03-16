@@ -6,5 +6,6 @@ namespace ProductManagementSystem.API.Services.Interfaces
     public interface IProductService
     {
         Task<Result<List<ProductDTO>>> GetAllProducts(ProductFilterDTO filter);
+        Task<Result<int>> CreateProduct(CreateProductDTO request);
     }
 }

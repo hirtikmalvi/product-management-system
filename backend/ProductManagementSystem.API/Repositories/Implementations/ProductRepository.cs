@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using ProductManagementSystem.API.DTOs.Product;
+using ProductManagementSystem.API.Models;
 using ProductManagementSystem.API.Repositories.Interfaces;
 
 namespace ProductManagementSystem.API.Repositories.Implementations
@@ -32,8 +33,6 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             cmd.Parameters.AddWithValue("@p_in_stock", (object?)filter.InStock ?? DBNull.Value); 
             cmd.Parameters.AddWithValue("@p_min_price", (object?)filter.MinPrice ?? DBNull.Value); 
             cmd.Parameters.AddWithValue("@p_max_price", (object?)filter.MaxPrice ?? DBNull.Value); 
-            //cmd.Parameters.AddWithValue("@p_created_from_date", (object?)filter.CreatedFromDate.Date ?? DBNull.Value);
-            //cmd.Parameters.AddWithValue("@p_created_to_date", (object?)filter.CreatedFromDate.Date ?? DBNull.Value);
             cmd.Parameters.Add("p_created_from_date", NpgsqlTypes.NpgsqlDbType.Date).Value = (object?)filter.CreatedFromDate ?? DBNull.Value;
             cmd.Parameters.Add("p_created_to_date", NpgsqlTypes.NpgsqlDbType.Date).Value = (object?)filter.CreatedToDate ?? DBNull.Value;
             await using var reader = await cmd.ExecuteReaderAsync();
@@ -44,6 +43,29 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             }
 
             return products;
+        }
+
+        public async Task<int> CreateProduct(CreateProductDTO request)
+        {
+            await using var conn = new NpgsqlConnection(connectionString);
+
+            await conn.OpenAsync();
+
+            var sql = "SELECT create_product(@p_name, @p_description, @p_price, @p_category_id, @p_in_stock, @p_manufacture_date)";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@p_name", (object?)request.Name!);
+            cmd.Parameters.AddWithValue("@p_description", (object?)request.Description ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@p_price", (object?)request.Price!);
+            cmd.Parameters.AddWithValue("@p_category_id", (object?)request.CategoryId ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@p_in_stock", (object?)request.InStock!);
+            cmd.Parameters.Add("@p_manufacture_date", NpgsqlTypes.NpgsqlDbType.Date).Value = (object?)request.ManufactureDate;
+
+            var addedProductId = await cmd.ExecuteScalarAsync();
+            var productIdToReturn = (int)addedProductId!;
+
+            return productIdToReturn;
         }
 
         private static ProductDTO ProductMapper(NpgsqlDataReader r)

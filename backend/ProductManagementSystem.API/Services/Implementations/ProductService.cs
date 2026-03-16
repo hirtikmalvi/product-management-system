@@ -19,5 +19,12 @@ namespace ProductManagementSystem.API.Services.Implementations
 
             return Result<List<ProductDTO>>.Ok(result, 200);
         }
+
+        public async Task<Result<int>> CreateProduct(CreateProductDTO request)
+        {
+            var result = await productRepository.CreateProduct(request);
+
+            return Result<int>.Ok(result, 200);
+        }
     }
 }
