@@ -8,5 +8,7 @@ namespace ProductManagementSystem.API.Services.Interfaces
         Task<Result<List<ProductDTO>>> GetAllProducts(ProductFilterDTO filter);
         Task<Result<int>> CreateProduct(CreateProductDTO request);
         Task<Result<ProductDTO>> GetProductById(int productId);
+        Task<Result<int>> UpdateProduct(int productId, UpdateProductDTO request);
+        Task<Result<int>> DeleteProduct(int productId);
     }
 }

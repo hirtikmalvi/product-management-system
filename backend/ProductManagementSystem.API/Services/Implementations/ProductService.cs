@@ -1,5 +1,6 @@
 ﻿using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Product;
+using ProductManagementSystem.API.Models;
 using ProductManagementSystem.API.Repositories.Interfaces;
 using ProductManagementSystem.API.Services.Interfaces;
 
@@ -37,6 +38,18 @@ namespace ProductManagementSystem.API.Services.Implementations
             }
 
             return Result<ProductDTO>.Ok(product, 200);
+        }
+
+        public async Task<Result<int>> UpdateProduct(int productId, UpdateProductDTO request)
+        {
+            await productRepository.UpdateProduct(productId, request);
+            return Result<int>.Ok(request.Id, 200);
+        }
+
+        public async Task<Result<int>> DeleteProduct(int productId)
+        {
+            await productRepository.DeleteProduct(productId);
+            return Result<int>.Ok(productId, 200);
         }
     }
 }

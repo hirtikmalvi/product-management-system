@@ -87,6 +87,42 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             return await reader.ReadAsync() ? ProductMapper(reader) : null;
         }
 
+        public async Task UpdateProduct(int productId, UpdateProductDTO request)
+        {
+            await using var conn = new NpgsqlConnection(connectionString);
+
+            await conn.OpenAsync();
+
+            var sql = "SELECT update_product(@p_id, @p_name, @p_description, @p_price, @p_category_id, @p_in_stock, @p_manufacture_date)";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@p_id", (object?)request.Id!);
+            cmd.Parameters.AddWithValue("@p_name", (object?)request.Name!);
+            cmd.Parameters.AddWithValue("@p_description", (object?)request.Description ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@p_price", (object?)request.Price!);
+            cmd.Parameters.AddWithValue("@p_category_id", (object?)request.CategoryId ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@p_in_stock", (object?)request.InStock!);
+            cmd.Parameters.Add("@p_manufacture_date", NpgsqlTypes.NpgsqlDbType.Date).Value = (object?)request.ManufactureDate;
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task DeleteProduct(int productId)
+        {
+            await using var conn = new NpgsqlConnection(connectionString);
+
+            await conn.OpenAsync();
+
+            var sql = "SELECT * FROM delete_product(@p_id)";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@p_id", productId);
+
+            await cmd.ExecuteReaderAsync();
+        }
+
         private static ProductDTO ProductMapper(NpgsqlDataReader r)
         {
             return new ProductDTO()
