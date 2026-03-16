@@ -20,6 +20,15 @@ namespace ProductManagementSystem.API.Controllers
         [HttpPost("all-products")]
         public async Task<IActionResult> GetAllProducts([FromBody] ProductFilterDTO filter)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Where(ms => ms.Value.Errors.Count > 0)
+                                       .SelectMany(kvp => kvp.Value.Errors.
+                                                Select(e => e.ErrorMessage))
+                                       .ToList();
+                return Ok(Result<int>.Fail(400, errors));
+            }
+
             var result = await productService.GetAllProducts(filter);
             return Ok(result);
         }
