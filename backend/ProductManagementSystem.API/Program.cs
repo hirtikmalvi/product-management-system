@@ -62,12 +62,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
+builder.Services.AddHttpContextAccessor();
+
 // Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 
 var app = builder.Build();
 
