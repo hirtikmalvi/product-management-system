@@ -6,5 +6,6 @@ namespace ProductManagementSystem.API.Repositories.Interfaces
     {
         Task<List<ProductDTO>> GetAllProducts(ProductFilterDTO filter);
         Task<int> CreateProduct(CreateProductDTO request);
+        Task<ProductDTO> GetProductById(int productId);
     }
 }

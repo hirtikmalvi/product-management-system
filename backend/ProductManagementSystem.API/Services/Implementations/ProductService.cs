@@ -26,5 +26,17 @@ namespace ProductManagementSystem.API.Services.Implementations
 
             return Result<int>.Ok(result, 200);
         }
+
+        public async Task<Result<ProductDTO>> GetProductById(int productId)
+        {
+            var product = await productRepository.GetProductById(productId);
+
+            if (product == null)
+            {
+                return Result<ProductDTO>.Fail(404, [$"Product with productId: {productId} not found."]);
+            }
+
+            return Result<ProductDTO>.Ok(product, 200);
+        }
     }
 }

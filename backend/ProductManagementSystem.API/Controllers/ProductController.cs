@@ -4,6 +4,7 @@ using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Product;
 using ProductManagementSystem.API.Services.Interfaces;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProductManagementSystem.API.Controllers
 {
@@ -17,7 +18,7 @@ namespace ProductManagementSystem.API.Controllers
             productService = _productService;
         }
 
-        [HttpPost("all-products")]
+        [HttpPost("get-all-products")]
         public async Task<IActionResult> GetAllProducts([FromBody] ProductFilterDTO filter)
         {
             if (!ModelState.IsValid)
@@ -45,6 +46,18 @@ namespace ProductManagementSystem.API.Controllers
                 return Ok(Result<int>.Fail(400, errors));
             }
             var result = await productService.CreateProduct(request);
+            return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById([FromRoute] int id)
+        {
+            if (id <= 0)
+            {
+                return Ok(Result<ProductDTO>.Fail(400, ["Please enter valid productId."]));
+            }
+
+            var result = await productService.GetProductById(id);
             return Ok(result);
         }
     }

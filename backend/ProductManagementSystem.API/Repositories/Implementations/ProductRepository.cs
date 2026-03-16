@@ -68,6 +68,25 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             return productIdToReturn;
         }
 
+        public async Task<ProductDTO> GetProductById(int productId)
+        {
+            var product = new ProductDTO();
+
+            await using var conn = new NpgsqlConnection(connectionString);
+
+            await conn.OpenAsync();
+
+            var sql = "SELECT * FROM get_product_by_id(@p_id)";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@p_id", productId);
+
+            await using var reader = await cmd.ExecuteReaderAsync();
+
+            return await reader.ReadAsync() ? ProductMapper(reader) : null;
+        }
+
         private static ProductDTO ProductMapper(NpgsqlDataReader r)
         {
             return new ProductDTO()
