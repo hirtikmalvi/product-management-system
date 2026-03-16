@@ -9,5 +9,6 @@ namespace ProductManagementSystem.API.Repositories.Interfaces
         Task<ProductDTO> GetProductById(int productId);
         Task UpdateProduct(int productId, UpdateProductDTO request);
         Task DeleteProduct(int productId);
+        Task<bool> ProductExists (int productId);
     }
 }

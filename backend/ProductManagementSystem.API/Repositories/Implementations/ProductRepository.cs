@@ -123,6 +123,22 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             await cmd.ExecuteReaderAsync();
         }
 
+        public async Task<bool> ProductExists(int productId)
+        {
+            await using var conn = new NpgsqlConnection(connectionString);
+
+            await conn.OpenAsync();
+
+            var sql = "SELECT EXISTS (SELECT 1 FROM Products WHERE id = @p_id);";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@p_id", productId);
+
+            var productExists = (bool)(await cmd.ExecuteScalarAsync())!;
+            return productExists;
+        }
+
         private static ProductDTO ProductMapper(NpgsqlDataReader r)
         {
             return new ProductDTO()

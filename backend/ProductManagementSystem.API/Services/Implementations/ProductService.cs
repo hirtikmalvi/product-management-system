@@ -42,12 +42,20 @@ namespace ProductManagementSystem.API.Services.Implementations
 
         public async Task<Result<int>> UpdateProduct(int productId, UpdateProductDTO request)
         {
+            if (!(await productRepository.ProductExists(productId)))
+            {
+                return Result<int>.Fail(404, [$"Product with productId: {productId} not found."]);
+            }
             await productRepository.UpdateProduct(productId, request);
             return Result<int>.Ok(request.Id, 200);
         }
 
         public async Task<Result<int>> DeleteProduct(int productId)
         {
+            if (!(await productRepository.ProductExists(productId)))
+            {
+                return Result<int>.Fail(404, [$"Product with productId: {productId} not found."]);
+            }
             await productRepository.DeleteProduct(productId);
             return Result<int>.Ok(productId, 200);
         }
