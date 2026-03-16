@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Product;
@@ -11,6 +12,7 @@ namespace ProductManagementSystem.API.Controllers
 {
     [Route("api/products")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService productService;
