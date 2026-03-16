@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Product;
 using ProductManagementSystem.API.Services.Interfaces;
