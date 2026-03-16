@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Product;
-using ProductManagementSystem.API.Models;
 using ProductManagementSystem.API.Services.Interfaces;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProductManagementSystem.API.Controllers
 {

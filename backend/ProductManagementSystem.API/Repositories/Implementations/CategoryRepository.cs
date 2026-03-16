@@ -14,6 +14,7 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             configuration = _configuration;
             connectionString = configuration.GetConnectionString("DbConnectionString")!;
         }
+
         public async Task<List<Category>> GetCategories()
         {
             var categories = new List<Category>();
@@ -38,5 +39,22 @@ namespace ProductManagementSystem.API.Repositories.Implementations
             }
             return categories;
         }
+
+        public async Task<bool> CategoryExists(int categoryId)
+        {
+            await using var conn = new NpgsqlConnection(connectionString);
+
+            await conn.OpenAsync();
+
+            var sql = "SELECT EXISTS (SELECT 1 FROM Categories WHERE id = @c_id);";
+
+            await using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@c_id", categoryId);
+
+            var categoryExists = (bool)(await cmd.ExecuteScalarAsync())!;
+            return categoryExists;
+        }
+
     }
 }

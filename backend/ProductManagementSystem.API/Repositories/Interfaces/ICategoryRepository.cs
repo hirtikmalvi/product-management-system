@@ -5,5 +5,6 @@ namespace ProductManagementSystem.API.Repositories.Interfaces
     public interface ICategoryRepository
     {
         Task<List<Category>> GetCategories();
+        Task<bool> CategoryExists(int categoryId);
     }
 }
