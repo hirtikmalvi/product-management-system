@@ -10,24 +10,24 @@ import {
 import {
   dateRangeValidator,
   priceRangeValidator,
-} from '../../validators/custom-validators.validator';
-import { ProductService } from '../../services/product/product.service';
+} from '../../../validators/custom-validators.validator';
+import { ProductService } from '../../../services/product/product.service';
 import {
   ProductFilter,
   ProductResponse,
-} from '../../models/products/product.model';
+} from '../../../models/products/product.model';
 import { CurrencyPipe, DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { Category } from '../../models/category/category.model';
-import { CategoryService } from '../../services/category/category.service';
+import { Category } from '../../../models/category/category.model';
+import { CategoryService } from '../../../services/category/category.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css'],
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.css'],
   imports: [NgFor, NgIf, CurrencyPipe, DatePipe, ReactiveFormsModule, NgClass],
 })
-export class ProductsComponent implements OnInit {
+export class ProductListComponent implements OnInit {
   filterForm!: FormGroup;
   private productService = inject(ProductService);
   private categoryService = inject(CategoryService);
