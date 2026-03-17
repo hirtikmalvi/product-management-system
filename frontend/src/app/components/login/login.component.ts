@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth/auth.service.ts.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { LoginRequest } from '../../models/auth/login.model';
 import { NgIf } from '@angular/common';
 

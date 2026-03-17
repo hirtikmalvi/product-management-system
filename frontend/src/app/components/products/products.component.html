@@ -1,0 +1,208 @@
+<div class="container-fluid mb-3">
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Products</h4>
+
+    <button class="btn btn-primary">+ Add Product</button>
+  </div>
+
+  <!-- FILTER FORM -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form [formGroup]="filterForm" (ngSubmit)="getAllProducts()">
+        <div class="row g-3">
+          <!-- Name -->
+          <div class="col-md-3">
+            <label class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="name"
+              placeholder="Search by name"
+            />
+          </div>
+
+          <!-- Category -->
+          <div class="col-md-3">
+            <label class="form-label">Category</label>
+            <select formControlName="categoryId" class="form-select">
+              <option [ngValue]="null">Select Category</option>
+              <option
+                [ngValue]="category.id"
+                *ngFor="let category of categories"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Stock -->
+          <div class="col-md-2">
+            <label class="form-label">Stock</label>
+            <select class="form-select" formControlName="inStock">
+              <option [ngValue]="null">All</option>
+              <option [ngValue]="true">In Stock</option>
+              <option [ngValue]="false">Out of Stock</option>
+            </select>
+          </div>
+
+          <!-- Min Price -->
+          <div class="col-md-2">
+            <label class="form-label">Min Price</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Min Price"
+              formControlName="minPrice"
+            />
+          </div>
+
+          <!-- Max Price -->
+          <div class="col-md-2">
+            <label class="form-label">Max Price</label>
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Max Price"
+              formControlName="maxPrice"
+            />
+            <small
+              class="text-danger"
+              *ngIf="
+                filterForm.hasError('minGreaterThanMax') &&
+                (filterForm.get('minPrice')?.touched ||
+                  filterForm.get('maxPrice')?.touched)
+              "
+            >
+              Min price cannot be greater than max price
+            </small>
+          </div>
+
+          <!-- Created From -->
+          <div class="col-md-3">
+            <label class="form-label">Created From</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="createdFromDate"
+            />
+          </div>
+
+          <!-- Created To -->
+          <div class="col-md-3">
+            <label class="form-label">Created To</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="createdToDate"
+            />
+            <small
+              class="text-danger"
+              *ngIf="
+                filterForm.hasError('startAfterEnd') &&
+                (filterForm.get('createdFromDate')?.touched ||
+                  filterForm.get('createdToDate')?.touched)
+              "
+            >
+              From date cannot be greater than To date
+            </small>
+          </div>
+
+          <!-- Buttons -->
+          <div class="col-md-3 d-flex align-items-end">
+            <button
+              class="btn btn-success me-2"
+              (click)="getAllProducts()"
+              [disabled]="!filterForm.valid"
+            >
+              Filter
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetFilter()"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PRODUCTS TABLE -->
+  <div class="card">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered rounded-3 mb-0">
+          <thead class="table-dark text-center align-middle">
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th width="80">In Stock</th>
+              <th>Price</th>
+              <th width="155">Manufacture Date</th>
+              <th width="135">Created</th>
+              <th width="150">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngIf="products.length === 0">
+              <td colspan="8" class="text-center h6 py-4">No products found</td>
+            </tr>
+
+            <tr
+              *ngFor="let product of products"
+              class="align-middle text-center"
+            >
+              <td>{{ product.id }}</td>
+
+              <td class="text-start">
+                <strong>{{ product.name }}</strong>
+                <br />
+                <small class="text-muted">
+                  {{ product.description }}
+                </small>
+              </td>
+
+              <td>{{ product.categoryName }}</td>
+
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="product.inStock ? 'bg-success' : 'bg-danger'"
+                >
+                  {{ product.inStock ? "Yes" : "No" }}
+                </span>
+              </td>
+
+              <td>{{ product.price | currency: "INR" }}</td>
+
+              <td>{{ product.manufactureDate | date: "dd-MMM-YYYY" }}</td>
+
+              <td>{{ product.createdAt | date: "dd-MMM-YYYY hh:mm:ss" }}</td>
+
+              <td>
+                <button
+                  class="btn btn-sm btn-warning me-2"
+                  (click)="editProduct(product.id)"
+                >
+                  Edit
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteProduct(product.id)"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { RegisterUserRequest } from '../../models/auth/register.model';
-import { AuthService } from '../../services/auth/auth.service.ts.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
