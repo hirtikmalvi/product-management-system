@@ -10,6 +10,7 @@ import {
 import { RegisterUserRequest } from '../../models/auth/register.model';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +23,11 @@ export class RegisterComponent implements OnInit {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Register');
+  }
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {

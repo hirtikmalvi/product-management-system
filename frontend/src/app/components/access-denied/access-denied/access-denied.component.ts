@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-access-denied',
@@ -11,6 +12,13 @@ import { AuthService } from '../../../services/auth/auth.service';
 export class AccessDeniedComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  private titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Access Denied');
+  }
+
   ngOnInit() {
     this.authService.user$.subscribe((user) => {
       if (user) {

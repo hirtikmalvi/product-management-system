@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -7,4 +8,10 @@ import { RouterLink } from '@angular/router';
   templateUrl: './not-found.component.html',
   styleUrl: './not-found.component.css',
 })
-export class NotFoundComponent {}
+export class NotFoundComponent {
+  private titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Page Not Found');
+  }
+}

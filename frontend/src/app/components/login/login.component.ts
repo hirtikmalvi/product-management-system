@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { LoginRequest } from '../../models/auth/login.model';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,11 @@ export class LoginComponent implements OnInit {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private titleService = inject(Title);
+
+  constructor() {
+    this.titleService.setTitle('Login');
+  }
 
   ngOnInit() {
     this.authService.user$.subscribe((user) => {
