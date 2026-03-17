@@ -1,0 +1,146 @@
+<form [formGroup]="productForm" (ngSubmit)="submitForm()">
+  <!-- Hidden ID -->
+  <input type="hidden" formControlName="id" />
+
+  <div class="row g-3">
+    <!-- NAME -->
+    <div class="col-md-6">
+      <label class="form-label"
+        >Product Name<span class="text-danger">*</span></label
+      >
+      <input
+        type="text"
+        class="form-control"
+        formControlName="name"
+        placeholder="Enter product name"
+      />
+
+      <small class="text-danger" *ngIf="hasControlError('name', 'required')">
+        Product name is required
+      </small>
+
+      <small class="text-danger" *ngIf="hasControlError('name', 'minlength')">
+        Minimum 1 characters required
+      </small>
+
+      <small class="text-danger" *ngIf="hasControlError('name', 'maxlength')">
+        Maximum 200 characters allowed
+      </small>
+    </div>
+
+    <!-- PRICE -->
+    <div class="col-md-6">
+      <label class="form-label">Price<span class="text-danger">*</span></label>
+      <input
+        type="number"
+        class="form-control"
+        formControlName="price"
+        placeholder="Enter price"
+      />
+
+      <small class="text-danger" *ngIf="hasControlError('price', 'required')">
+        Price is required
+      </small>
+
+      <small class="text-danger" *ngIf="hasControlError('price', 'min')">
+        Price must be greater or equal to 0.
+      </small>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="col-12">
+      <label class="form-label">
+        Description
+        <span class="text-muted">(Optional)</span>
+      </label>
+
+      <textarea
+        class="form-control"
+        rows="3"
+        formControlName="description"
+        placeholder="Enter product description"
+      ></textarea>
+    </div>
+
+    <!-- CATEGORY -->
+    <div class="col-md-6">
+      <label class="form-label">
+        Category
+        <span class="text-muted">(Optional)</span>
+      </label>
+
+      <select class="form-select" formControlName="categoryId">
+        <option [ngValue]="null">Select Category</option>
+        <option *ngFor="let category of categories" [ngValue]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+
+      <small class="text-danger" *ngIf="hasControlError('categoryId', 'min')">
+        Category must be valid
+      </small>
+    </div>
+
+    <!-- STOCK -->
+    <div class="col-md-6">
+      <label class="form-label d-block"
+        >In Stock <span class="text-danger">*</span></label
+      >
+
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="inStock"
+          [value]="true"
+          id="stockYes"
+        />
+        <label class="form-check-label" for="stockYes">Yes</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          formControlName="inStock"
+          [value]="false"
+          id="stockNo"
+        />
+        <label class="form-check-label" for="stockNo">No</label>
+      </div>
+    </div>
+
+    <!-- DATE -->
+    <div class="col-md-6">
+      <label class="form-label"
+        >Manufacture Date<span class="text-danger">*</span></label
+      >
+      <input
+        type="date"
+        class="form-control"
+        formControlName="manufactureDate"
+      />
+      <small
+        class="text-danger"
+        *ngIf="hasControlError('manufactureDate', 'required')"
+      >
+        Manufacture Date is required.
+      </small>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="d-flex justify-content-end mt-4">
+    <button
+      type="button"
+      class="btn btn-outline-secondary me-2"
+      data-bs-dismiss="modal"
+    >
+      Cancel
+    </button>
+
+    <button type="submit" class="btn btn-primary">
+      {{ isEditMode ? "Update" : "Create" }}
+    </button>
+  </div>
+</form>

@@ -3,7 +3,37 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0">Products</h4>
 
-    <button class="btn btn-primary">+ Add Product</button>
+    <button class="btn btn-primary" (click)="onAddProduct()">
+      + Add Product
+    </button>
+  </div>
+
+  <!-- Bootstrap Modal -->
+  <div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ isEditMode ? "Edit Product" : "Add Product" }}
+          </h5>
+
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <app-product-form
+            *ngIf="showForm"
+            [product]="selectedProduct"
+            [isEditMode]="isEditMode"
+            (saved)="onProductSaved($event)"
+          ></app-product-form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- FILTER FORM -->
@@ -144,7 +174,7 @@
               <th width="80">In Stock</th>
               <th>Price</th>
               <th width="155">Manufacture Date</th>
-              <th width="135">Created</th>
+              <th width="135">Created At</th>
               <th width="150">Actions</th>
             </tr>
           </thead>

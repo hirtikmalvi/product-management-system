@@ -19,3 +19,22 @@ export interface ProductResponse {
   manufactureDate: Date;
   createdAt: Date;
 }
+
+export interface CreateProductRequest {
+  name: string;
+  description: string | null;
+  price: number;
+  categoryId: number | null;
+  inStock: boolean;
+  manufactureDate: Date;
+}
+
+export interface EditProductRequest {
+  id: number;
+  name: string;
+  description: string | null;
+  price: number;
+  categoryId: number | null;
+  inStock: boolean;
+  manufactureDate: Date;
+}
