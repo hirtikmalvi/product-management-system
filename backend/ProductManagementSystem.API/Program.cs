@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ProductManagementSystem.API.Common;
+using ProductManagementSystem.API.Middleware;
 using ProductManagementSystem.API.Repositories.Implementations;
 using ProductManagementSystem.API.Repositories.Interfaces;
 using ProductManagementSystem.API.Services.Implementations;
@@ -100,7 +101,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();    
