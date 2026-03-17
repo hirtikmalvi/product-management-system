@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductManagementSystem.API.Common;
 using ProductManagementSystem.API.DTOs.Auth.Login;
 using ProductManagementSystem.API.DTOs.Auth.Register;
