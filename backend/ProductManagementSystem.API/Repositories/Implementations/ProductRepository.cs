@@ -1,6 +1,5 @@
 ﻿using Npgsql;
 using ProductManagementSystem.API.DTOs.Product;
-using ProductManagementSystem.API.Models;
 using ProductManagementSystem.API.Repositories.Interfaces;
 
 namespace ProductManagementSystem.API.Repositories.Implementations
@@ -148,7 +147,7 @@ namespace ProductManagementSystem.API.Repositories.Implementations
                 Description = r.IsDBNull(r.GetOrdinal("Description")) ? "N/A" : r.GetString(r.GetOrdinal("Description")),
                 Price = r.GetDecimal(r.GetOrdinal("Price")),
                 InStock = r.GetBoolean(r.GetOrdinal("InStock")),
-                CategoryId = r.GetInt32(r.GetOrdinal("CategoryId")),
+                CategoryId = r.IsDBNull(r.GetOrdinal("categoryid")) ? (int?)null : r.GetInt32(r.GetOrdinal("categoryid")),
                 CategoryName = r.GetString(r.GetOrdinal("CategoryName")),
                 CreatedAt = r.GetDateTime(r.GetOrdinal("CreatedAt")),
                 ManufactureDate = r.GetDateTime(r.GetOrdinal("ManufactureDate")),
