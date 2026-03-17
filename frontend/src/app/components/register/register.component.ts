@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { RegisterUserRequest } from '../../models/auth/register.model';
 import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
 
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.initializeForm();
@@ -73,6 +75,7 @@ export class RegisterComponent implements OnInit {
         if (response.success && response.statusCode == 201) {
           alert('User registered successfully');
           this.initializeForm();
+          this.router.navigate(['auth', 'login']);
         } else {
           alert(response.errors?.join(', '));
         }

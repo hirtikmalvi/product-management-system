@@ -1,0 +1,13 @@
+<div class="container text-center mt-5">
+  <h1 class="display-5 text-danger">Access Denied</h1>
+
+  <p class="mt-3 text-muted">
+    This application is restricted to <strong>Admin users only</strong>.
+  </p>
+
+  <p class="text-muted">You do not have permission to access this page.</p>
+
+  <button class="btn btn-primary mt-3" [routerLink]="['/auth', 'login']">
+    Go Back
+  </button>
+</div>
