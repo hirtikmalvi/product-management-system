@@ -23,6 +23,13 @@ export class LoginComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit() {
+    this.authService.user$.subscribe((user) => {
+      if (user) {
+        this.router.navigate(['products']);
+      } else {
+        this.router.navigate(['auth', 'login']);
+      }
+    });
     this.initializeForm();
   }
 

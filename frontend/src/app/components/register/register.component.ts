@@ -24,6 +24,12 @@ export class RegisterComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
+    this.authService.user$.subscribe((user) => {
+      if (user) {
+        this.router.navigate(['products']);
+      }
+    });
+
     this.initializeForm();
   }
 
