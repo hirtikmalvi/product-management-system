@@ -75,18 +75,19 @@
           <option value="User">User</option>
         </select>
 
-        <small class="text-danger" *ngIf="hasControlError('role', 'required')">
+        <small
+          class="text-danger"
+          *ngIf="
+            (registerForm.get('role')?.touched ||
+              registerForm.get('role')?.dirty) &&
+            registerForm.hasError('roleIsRequired')
+          "
+        >
           Role is required.
         </small>
       </div>
 
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="registerForm.invalid"
-      >
-        Register
-      </button>
+      <button type="submit" class="btn btn-primary">Register</button>
     </form>
   </div>
 </div>

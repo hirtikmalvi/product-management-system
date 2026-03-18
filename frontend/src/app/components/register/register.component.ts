@@ -1,10 +1,13 @@
 import { NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { RegisterUserRequest } from '../../models/auth/register.model';
@@ -40,31 +43,36 @@ export class RegisterComponent implements OnInit {
   }
 
   initializeForm(): void {
-    this.registerForm = new FormGroup({
-      name: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(150),
-      ]),
-      email: new FormControl(null, [
-        Validators.required,
-        Validators.email,
-        Validators.maxLength(320),
-      ]),
-      password: new FormControl(null, [
-        Validators.required,
-        Validators.maxLength(255),
-      ]),
-      role: new FormControl('0', [
-        Validators.required,
-        Validators.maxLength(15),
-      ]),
-    });
+    this.registerForm = new FormGroup(
+      {
+        name: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(150),
+        ]),
+        email: new FormControl(null, [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(320),
+        ]),
+        password: new FormControl(null, [
+          Validators.required,
+          Validators.maxLength(255),
+        ]),
+        role: new FormControl('0', [
+          Validators.required,
+          Validators.maxLength(15),
+        ]),
+      },
+      {
+        validators: [this.roleIsRequiredValidator],
+      },
+    );
   }
 
   hasControlError(controlName: string, errorName: string): boolean {
     let control = this.registerForm.get(controlName);
-
+    console.log(control);
     if (control != null) {
       return (
         (control?.touched || control?.dirty) && control?.hasError(errorName)
@@ -73,6 +81,17 @@ export class RegisterComponent implements OnInit {
       return false;
     }
   }
+
+  roleIsRequiredValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
+    const role = control.get('role')?.value ?? '0';
+
+    if (role == '0') {
+      return { roleIsRequired: true };
+    }
+    return null;
+  };
 
   submitRegisterForm(): void {
     if (!this.registerForm.valid) {
